@@ -5,7 +5,6 @@ builds:
     - CGO_ENABLED=0
   goos:
    - linux
-   - darwin
    - windows
   goarch:
     - 386
@@ -16,7 +15,6 @@ archives:
   - id: archive
     name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}'
     replacements:
-      darwin: Darwin
       linux: Linux
       windows: Windows
       386: i386
@@ -34,19 +32,6 @@ changelog:
     exclude:
     - '^docs:'
     - '^test:'
-brews:
-  -
-    github:
-      owner: ffsclyh
-      name: homebrew-tap
-    commit_author:
-      name: goreleaserbot
-      email: goreleaser@ffsclyh.com
-    folder: Formula
-    homepage:  https://github.com/ffsclyh/config-lint
-    description: Validate configuration files using rules specified in YAML
-    test: |
-      system "#{bin}/config-lint -version"
 dockers:
   - 
     dockerfile: .dockerhub/Dockerfile
