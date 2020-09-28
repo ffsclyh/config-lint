@@ -1,0 +1,22 @@
+---
+
+terraform: true
+
+files:
+  - "*.tf"
+
+exceptions:
+  - RuleID: ROLE_WILDCARD_ACTION
+    ResourceCategory: resource
+    ResourceType: aws_iam_role
+    ResourceID: role2
+    Comments: Just because
+
+tags:
+  - iam
+
+exclude:
+  - this_file_will_be_excluded.tf
+
+exclude_from:
+  - ./testdata/exclude-list

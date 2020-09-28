@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  serviceAccountName: build-robot
+  securityContext:
+    readOnlyFilesystem: true
+    runAsNonRoot: true

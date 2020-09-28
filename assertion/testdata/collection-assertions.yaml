@@ -1,0 +1,273 @@
+---
+description: Test collection assertions
+test_cases:
+
+  - name: every_OK
+    rule:
+      id:       COLLECTION
+      message:  Invalid key
+      severity: FAILURE
+      resource: sample
+      assertions:
+        - every:
+            key: "keys(@)"
+            expressions:
+              - key: "@"
+                op: in
+                value: Foo,Bar
+    resource:
+      id: collection_id
+      type: example
+      properties:
+        Foo:
+          - A
+          - B
+          - C
+        Bar:
+          - D
+          - E
+    result: OK
+
+  - name: every_FAILURE
+    rule:
+      id:       COLLECTION
+      message:  Invalid key
+      severity: FAILURE
+      resource: sample
+      assertions:
+        - every:
+            key: "keys(@)"
+            expressions:
+              - key: "@"
+                op: in
+                value: Foo,Bar
+    resource:
+      id: collection_id
+      type: example
+      properties:
+        Foo:
+          - A
+          - B
+          - C
+        Bar:
+          - D
+          - E
+        Baz:
+          - F
+    result: FAILURE
+
+  - name: every_multiple_assertions_FAILURE
+    rule:
+      id:       COLLECTION
+      message:  Invalid key
+      severity: FAILURE
+      resource: sample
+      assertions:
+        - every:
+            key: locations
+            expressions:
+              - key: city
+                op: present
+              - key: state
+                op: present
+    resource:
+      id: collection_id
+      type: example
+      properties:
+        locations:
+          - city: Seattle
+            state: WA
+          - city: San Francisco
+    result: FAILURE
+
+  - name: some_OK
+    rule:
+      id:       COLLECTION
+      message:  Invalid key
+      severity: FAILURE
+      resource: sample
+      assertions:
+        - some:
+            key: "keys(@)"
+            expressions:
+              - key: "@"
+                op: in
+                value: Foo,Bar
+    resource:
+      id: collection_id
+      type: example
+      properties:
+        Foo:
+          - A
+          - B
+          - C
+        Baz:
+          - D
+          - E
+    result: OK
+
+  - name: some_FAILURE
+    rule:
+      id:       COLLECTION
+      message:  Invalid key
+      severity: FAILURE
+      resource: sample
+      assertions:
+        - some:
+            key: "keys(@)"
+            expressions:
+              - key: "@"
+                op: in
+                value: Foo,Bar
+    resource:
+      id: collection_id
+      type: example
+      properties:
+        Baz:
+          - A
+    result: FAILURE
+
+  - name: none_OK
+    rule:
+      id:       COLLECTION
+      message:  Invalid key
+      severity: FAILURE
+      resource: sample
+      assertions:
+        - none:
+            key: "keys(@)"
+            expressions:
+              - key: "@"
+                op: in
+                value: Foo,Bar
+    resource:
+      id: collection_id
+      type: example
+      properties:
+        Baz:
+          - A
+          - B
+    result: OK
+
+  - name: none_with_multiple_assertions_OK
+    rule:
+      id: COLLECTION
+      message: Invalid key
+      severity: FAILURE
+      resource: sample
+      assertions:
+        - none:
+            key: "ipPermissions[]"
+            expressions:
+              - key: "fromPort"
+                op: eq
+                value: 22
+                value_type: integer
+              - key: "ipRanges[]"
+                op: contains
+                value: 0.0.0.0/0
+    resource:
+      id: collection_id
+      type: sample
+      properties:
+        ipPermissions:
+          - fromPort: 80
+            ipRanges:
+              - 0.0.0.0/0
+    result: OK
+
+  - name: none_FAILURE
+    rule:
+      id:       COLLECTION
+      message:  Invalid key
+      severity: FAILURE
+      resource: sample
+      assertions:
+        - none:
+            key: "keys(@)"
+            expressions:
+              - key: "@"
+                op: in
+                value: Foo,Bar
+    resource:
+      id: collection_id
+      type: example
+      properties:
+        Foo:
+          - A
+        Bar:
+          - B
+    result: FAILURE
+
+  - name: none_with_multiple_assertions_FAILURE
+    rule:
+      id: COLLECTION
+      message: Invalid key
+      severity: FAILURE
+      resource: sample
+      assertions:
+        - none:
+            key: "ipPermissions[]"
+            expressions:
+              - key: "fromPort"
+                op: eq
+                value: 22
+                value_type: integer
+              - key: "ipRanges[]"
+                op: contains
+                value: 0.0.0.0/0
+    resource:
+      id: collection_id
+      type: sample
+      properties:
+        ipPermissions:
+          - fromPort: 22
+            ipRanges:
+              - 0.0.0.0/0
+    result: FAILURE
+
+  - name: one_OK
+    rule:
+      id:       COLLECTION
+      message:  Duplicate names
+      severity: FAILURE
+      resource: example
+      assertions:
+        - exactly-one:
+            key: "tags[]"
+            expressions:
+              - key: name
+                op: eq
+                value: A
+    resource:
+      id: collection_id
+      type: example
+      properties:
+        tags:
+          - name: A
+          - name: B
+    result: OK
+
+  - name: one_FAILURE
+    rule:
+      id:       COLLECTION
+      message:  Duplicate names
+      severity: FAILURE
+      resource: example
+      assertions:
+        - exactly-one:
+            key: "tags[]"
+            expressions:
+              - key: name
+                op: eq
+                value: B
+    resource:
+      id: collection_id
+      type: example
+      properties:
+        tags:
+          - name: A
+          - name: B
+          - name: B
+    result: FAILURE
+

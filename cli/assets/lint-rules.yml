@@ -1,0 +1,127 @@
+---
+version: 1
+description: Rules for config-lint
+type: LintRules
+files:
+  - "*.yml"
+rules:
+
+  - id: VALID_TYPE
+    message: Not a valid linter type
+    resource: LintRuleSet
+    severity: FAILURE
+    assertions:
+      - key: type
+        op: in
+        value: Terraform,Terraform12,Kubernetes,LintRules,YAML,JSON,CSV
+
+  - id: VALID_VERSION
+    message: RuleSet must have a supported version
+    resource: LintRuleSet
+    severity: WARNING
+    assertions:
+      - key: version
+        op: eq
+        value: 1
+
+  - id: HAS_RULES
+    message: RuleSet needs at least one rule
+    resource: LintRuleSet
+    severity: WARNING
+    assertions:
+      - key: rules
+        op: not-empty
+
+  - id: YAML_RULES_HAVE_RESOURCES_SECTION
+    message: RuleSet for YAML required resources section
+    resource: LintRuleSet
+    severity: FAILURE
+    conditions:
+      - key: type
+        op: eq
+        value: YAML
+    assertions:
+      - key: resources
+        op: present
+
+  - id: EVERY_RULE_HAS_ID
+    message: Event rule in rule set must have an id
+    resource: LintRuleSet
+    severity: FAILURE
+    assertions:
+      - every:
+          key: rules
+          expressions:
+            - key: id
+              op: present
+
+  - id: ID_PRESENT
+    message: Rule must have an ID
+    resource: LintRule
+    severity: FAILURE
+    assertions:
+      - key: id
+        op: present
+
+  - id: RESOURCE_PRESENT
+    message: Rule must have a resource, resources or except_resources attribute
+    severity: FAILURE
+    resource: LintRule
+    assertions:
+      - or:
+        - key: resource
+          op: present
+        - key: resources
+          op: present
+        - key: except_resources
+          op: present
+    tags:
+      - resource
+
+  - id: ASSERTIONS_OR_INVOKE
+    message: Rule must have assertions or invoke
+    resource: LintRule
+    severity: FAILURE
+    assertions:
+      - or:
+          - key: assertions
+            op: present
+          - key: invoke
+            op: present
+
+  - id: VALID_EXPRESSION
+    message: "These are mutually exclusive in the same expression: key,or,xor,and,not,every,some,none"
+    resource: LintRule
+    severity: FAILURE
+    assertions:
+      - every:
+          key: "assertions[]"
+          expressions:
+            - xor:
+              - key: "@"
+                op: has-properties
+                value: key,op
+              - key: "@"
+                op: has-properties
+                value: or
+              - key: "@"
+                op: has-properties
+                value: xor
+              - key: "@"
+                op: has-properties
+                value: and
+              - key: "@"
+                op: has-properties
+                value: not
+              - key: "@"
+                op: has-properties
+                value: every
+              - key: "@"
+                op: has-properties
+                value: some
+              - key: "@"
+                op: has-properties
+                value: none
+              - key: "@"
+                op: has-properties
+                value: exactly-one

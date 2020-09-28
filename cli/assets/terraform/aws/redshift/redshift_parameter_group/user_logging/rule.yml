@@ -1,0 +1,22 @@
+---
+version: 1
+description: Terraform rules
+type: Terraform
+files:
+  - "*.tf"
+  - "*.tfvars"
+rules:
+
+  - id: REDSHIFT_CLUSTER_PARAMETER_GROUP_USER_ACTIVITY_LOGGING
+    message: RedshiftCluster Parameter Group should set enable_user_activity_logging to true
+    resource: aws_redshift_parameter_group
+    severity: FAILURE
+    assertions:
+      - exactly-one:
+          key: parameter
+          expressions:
+            - key: name
+              op: eq
+              value: enable_user_activity_logging
+            - key: value
+              op: is-true

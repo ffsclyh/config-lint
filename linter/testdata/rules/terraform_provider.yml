@@ -1,0 +1,27 @@
+version: 1
+description: Rules for Terraform configuration files
+type: Terraform
+files:
+  - "*.tf"
+rules:
+
+  - id: AWS_PROVIDER
+    message: Testing
+    resource: aws
+    category: provider
+    assertions:
+      - key: access_key
+        op: present
+      - key: secret_key
+        op: present
+      - key: region
+        op: present
+
+  - id: SAFE_PROVIDER
+    message: Testing
+    resource: safe
+    category: provider
+    assertions:
+      - key: password
+        op: absent
+
