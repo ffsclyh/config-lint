@@ -37,13 +37,13 @@ changelog:
 brews:
   -
     github:
-      owner: stelligent
+      owner: ffsclyh
       name: homebrew-tap
     commit_author:
       name: goreleaserbot
-      email: goreleaser@stelligent.com
+      email: goreleaser@ffsclyh.com
     folder: Formula
-    homepage:  https://github.com/stelligent/config-lint
+    homepage:  https://github.com/ffsclyh/config-lint
     description: Validate configuration files using rules specified in YAML
     test: |
       system "#{bin}/config-lint -version"
@@ -51,5 +51,5 @@ dockers:
   - 
     dockerfile: .dockerhub/Dockerfile
     image_templates:
-    - "stelligent/config-lint:{{ .Tag }}"
-    - "stelligent/config-lint:latest"
+    - "ffsclyh/config-lint:{{ .Tag }}"
+    - "ffsclyh/config-lint:latest"
