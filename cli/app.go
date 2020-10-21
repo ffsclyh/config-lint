@@ -119,9 +119,9 @@ func main() {
 	rulesFilenames := loadFilenames(commandLineOptions.RulesFilenames, profileOptions.Rules)
 	configFilenames := defaultToCurrentDirectory(loadFilenames(commandLineOptions.Args, profileOptions.Files))
 	useTerraformBuiltInRules := *commandLineOptions.TerraformBuiltInRules || profileOptions.Terraform
-	fmt.Printf("rulesFilenames :  %v", rulesFilenames)
-	fmt.Printf("configFilenames :  %v", configFilenames)
-	fmt.Printf("useTerraformBuiltInRules :  %v", useTerraformBuiltInRules)	
+	fmt.Printf("rulesFilenames :  %v \n", rulesFilenames)
+	fmt.Printf("configFilenames :  %v \n", configFilenames)
+	fmt.Printf("useTerraformBuiltInRules :  %v \n", useTerraformBuiltInRules)	
 	if err != nil {
 		fmt.Printf("Unable to load exclude patterns: %s\n", err)
 		os.Exit(-1)
@@ -134,6 +134,9 @@ func main() {
 	}
 
 	ruleSets, err := loadRuleSets(rulesFilenames)
+
+	fmt.Printf("ruleSets :  %v in file %s \n", ruleSets , rulesFilenames)
+
 	if err != nil {
 		fmt.Printf("Failed to load rules: %v\n", err)
 		os.Exit(-1)
@@ -155,6 +158,7 @@ func main() {
 	}
 
 	ruleSets = addExceptions(ruleSets, profileOptions.Exceptions)
+	fmt.Printf("ruleSets Total:  %v \n", ruleSets )
 
 	os.Exit(applyRules(ruleSets, configFilenames, linterOptions, DefaultReportWriter{Writer: os.Stdout}))
 }
