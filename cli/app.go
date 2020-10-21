@@ -119,7 +119,9 @@ func main() {
 	rulesFilenames := loadFilenames(commandLineOptions.RulesFilenames, profileOptions.Rules)
 	configFilenames := defaultToCurrentDirectory(loadFilenames(commandLineOptions.Args, profileOptions.Files))
 	useTerraformBuiltInRules := *commandLineOptions.TerraformBuiltInRules || profileOptions.Terraform
-
+	fmt.Printf("rulesFilenames :  %v", rulesFilenames)
+	fmt.Printf("configFilenames :  %v", configFilenames)
+	fmt.Printf("useTerraformBuiltInRules :  %v", useTerraformBuiltInRules)	
 	if err != nil {
 		fmt.Printf("Unable to load exclude patterns: %s\n", err)
 		os.Exit(-1)
