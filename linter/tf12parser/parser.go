@@ -103,7 +103,7 @@ func (parser *Parser) parseFile(file *hcl.File) (hcl.Blocks, error) {
 		return nil, fmt.Errorf("file contents is empty")
 	}
 
-	fmt.Printf("parseFile fuction in Parse.go  %+v\n", *contents.Blocks )
+	fmt.Printf("parseFile fuction in Parse.go  %#v\n", contents.Blocks )
 	return contents.Blocks, nil
 }
 
