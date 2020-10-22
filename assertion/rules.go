@@ -81,6 +81,8 @@ func FilterRulesByTagAndID(rules []Rule, tags []string, ruleIds []string, ignore
 func ResolveRules(rules []Rule, valueSource ValueSource) ([]Rule, []Violation) {
 	resolvedRules := []Rule{}
 	violations := []Violation{}
+	Debugf("ResolveRules fuction check rules: %+v\n",rules)
+	Debugf("ResolveRules fuction check valueSource: %+v\n",valueSource)
 	for _, rule := range rules {
 		r, vs := ResolveRule(rule, valueSource)
 		resolvedRules = append(resolvedRules, r)
@@ -94,6 +96,7 @@ func ResolveRule(rule Rule, valueSource ValueSource) (Rule, []Violation) {
 	resolvedRule := rule
 	resolvedRule.Assertions = []Expression{}
 	violations := []Violation{}
+
 	for _, assertion := range rule.Assertions {
 		value, err := valueSource.GetValue(assertion)
 		if err != nil {
