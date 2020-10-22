@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/hashicorp/terraform/lang"
 	"github.com/zclconf/go-cty/cty"
+	"github.com/stelligent/config-lint/assertion"
 )
 
 const maxContextIterations = 32
@@ -102,8 +103,12 @@ func (parser *Parser) parseFile(file *hcl.File) (hcl.Blocks, error) {
 	if contents == nil {
 		return nil, fmt.Errorf("file contents is empty")
 	}
+	
+	//Debug printout
+	for _, b := range contents.Blocks {
+		assertion.Debugf("parseFile fuction in Parse.go %+v\n", b )
+	}
 
-	fmt.Printf("parseFile fuction in Parse.go  %#v\n", contents.Blocks )
 	return contents.Blocks, nil
 }
 
@@ -252,6 +257,7 @@ func (parser *Parser) parseModuleBlock(block *hcl.Block, parentContext *hcl.Eval
 		blocks = append(blocks, fileBlocks...)
 	}
 
+	assertion.Debugf("parseModuleBlock fuction in Parse.go %+v\n", blocks ) 
 	childModules, ctx := subParser.buildEvaluationContext(blocks, path, inputVars, false)
 
 	return childModules, cty.ObjectVal(ctx.Variables)
