@@ -165,6 +165,7 @@ func (parser *Parser) buildEvaluationContext(blocks hcl.Blocks, path string, inp
 		ctx.Variables["provider"] = parser.getValuesByBlockType(ctx, blocks, "provider", nil)
 		resources := parser.getValuesByBlockType(ctx, blocks, "resource", nil)
 		for key, resource := range resources.AsValueMap() {
+			assertion.Debugf("buildEvaluationContext fuction in Parse.go %s : %+v \n", key , resource  )
 			ctx.Variables[key] = resource
 		}
 		ctx.Variables["data"] = parser.getValuesByBlockType(ctx, blocks, "data", nil)
@@ -174,6 +175,7 @@ func (parser *Parser) buildEvaluationContext(blocks hcl.Blocks, path string, inp
 		} else {
 			outputs := parser.getValuesByBlockType(ctx, blocks, "output", nil)
 			for key, val := range outputs.AsValueMap() {
+				assertion.Debugf("buildEvaluationContext fuction in Parse.go %s : %s \n", key , val  )
 				ctx.Variables[key] = val
 			}
 		}
@@ -200,6 +202,7 @@ func (parser *Parser) buildEvaluationContext(blocks hcl.Blocks, path string, inp
 	}
 
 	for moduleName, blocks := range moduleBlocks {
+		assertion.Debugf("buildEvaluationContext fuction in Parse.go moduleName %s : %+v \n", moduleName , blocks  )
 		for _, block := range blocks {
 			block.prefix = fmt.Sprintf("module.%s", moduleName)
 			localBlocks = append(localBlocks, block)
