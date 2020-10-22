@@ -91,7 +91,7 @@ func loadProfile(filename string) (ProfileOptions, error) {
 			options.Files = append(options.Files, matches...)
 		}
 	}
-	Debugf("loadProfile fuction %+v\n",options)
+	assertion.Debugf("loadProfile fuction %+v\n",options)
 	return options, nil
 }
 
