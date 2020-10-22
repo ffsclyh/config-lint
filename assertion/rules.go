@@ -122,6 +122,8 @@ func ResolveRule(rule Rule, valueSource ValueSource) (Rule, []Violation) {
 
 // CheckRule returns a list of violations for a single Rule applied to a single Resource
 func CheckRule(rule Rule, resource Resource, e ExternalRuleInvoker) (string, []Violation, error) {
+	Debugf("CheckRule fuction check rule: %+v\n",rule)
+	Debugf("CheckRule fuction check resource: %+v\n",resource)
 	returnStatus := "OK"
 	violations := make([]Violation, 0)
 	if ExcludeResource(rule, resource) {
